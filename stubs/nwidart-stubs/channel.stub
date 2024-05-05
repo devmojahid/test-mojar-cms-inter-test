@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Mojar CMS - A Laravel CMS with Content Management Features
+ * 
+ * @package  mojahid/mojar 
+ * @author Mojahid <raofahmedmojahid@gmail.com>
+ * @version 1.0.0
+ * @link https://github.com/devmojahid
+ */
+
+namespace $NAMESPACE$;
+
+class $CLASS$
+{
+
+    /**
+     * Create a new channel instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+    
+    /**
+     * Authenticate the user's access to the channel.
+     */
+    public function join(Operator $user): array|bool
+    {
+        //
+    }
+   
+}

@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * Mojar CMS - A Laravel CMS with Content Management Features
+ * 
+ * @package  mojahid/mojar 
+ * @author Mojahid <raofahmedmojahid@gmail.com>
+ * @version 1.0.0
+ * @link https://github.com/devmojahid
+ */
+
+namespace $CLASS_NAMESPACE$;
+
+class $CLASS$
+{
+    public function __construct()
+    {
+        //
+    }
+}

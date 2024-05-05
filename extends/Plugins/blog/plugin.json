@@ -1,0 +1,9 @@
+{
+    "name": "Mojahid plugin",
+    "description": "A simple plugin to create a custom post type and custom taxonomy",
+    "author": "Mojahidul Islam",
+    "author_uri": "https://tareq.co",
+    "version": "1.0",
+    "license": "GPL2 or later",
+    "license_uri": "https://www.gnu.org/licenses/gpl-2.0.html"
+}

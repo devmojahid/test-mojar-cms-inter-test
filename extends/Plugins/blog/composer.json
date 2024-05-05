@@ -1,0 +1,20 @@
+{
+    "name": "plugin/blog",
+    "description": "This is mojar cms plugin",
+    "type": "composer-plugin",
+    "autoload": {
+        "psr-4": {
+            "Plugin\\Blog\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mojahid Islam",
+            "email": "raofahmedmojahid@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "laravel-zero/laravel-zero": "dev-master"
+    }
+}
