@@ -79,7 +79,6 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      */
 
     public function __construct(Container $app, string $path = null){
-        // dd($app['files'], $path);
         $this->app = $app;
         $this->path = $path;
         $this->url = $app['url'];
@@ -180,10 +179,9 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      */
     public function all(bool $collection = false): array|Collection
     {
-       if(!$this->config('cache.enabled')){
+       if(!$this->config('core.cache.enabled')){
            return $this->scan();
        }
-
        return $this->formatCached($this->getCached());
     }
 
@@ -214,8 +212,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     public function getCached(): array
     {
         return $this->cache->remember(
-            $this->config('cache.key'),
-            $this->config('cache.lifetime'),
+            $this->config('core.cache.key'),
+            $this->config('core.cache.lifetime'),
             function () {
                 return $this->toCollaction()->toArray();
             }

@@ -3,7 +3,10 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\ConfigContract;
 use Modules\Core\Contracts\LocalPluginRepositoryContract;
+use Modules\Core\Contracts\PluginActivatorInterface;
+use Modules\Core\Exceptions\InvalidActivatorClass;
 use Modules\Core\Supports\LocalPluginRepository;
 
 class PluginServiceProvider extends ServiceProvider
@@ -14,9 +17,20 @@ class PluginServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(LocalPluginRepositoryContract::class, function ($app) {
-            $path = module_path('Core', 'Plugins');
+            $path = base_path("extends/Plugins");
             return new LocalPluginRepository($app , $path);
         });
+
+        $this->app->singleton(
+            PluginActivatorInterface::class,
+            function ($app) {
+                $activetorClass = config('plugin.db_activator');
+                if($activetorClass === null){
+                    throw InvalidActivatorClass::missConfig();
+                }
+                return new $activetorClass($app, $app[ConfigContract::class]);
+            }
+        );
 
         $this->app->alias(LocalPluginRepositoryContract::class, 'plugins');
     }

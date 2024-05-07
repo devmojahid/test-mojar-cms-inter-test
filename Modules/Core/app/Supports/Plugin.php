@@ -16,6 +16,7 @@ use Illuminate\View\ViewFinderInterface;
 use Modules\Core\Contracts\PluginActivatorInterface;
 use Throwable;
 use Illuminate\Support\Str;
+use Modules\Core\Supports\Json;
 
 class Plugin{
     use Macroable;
@@ -49,7 +50,7 @@ class Plugin{
 
     protected Translator $lang;
 
-    protected ViewFinderInterface $view;
+    protected ViewFinderInterface $finder;
 
     private CacheManager $cache;
 
@@ -73,7 +74,7 @@ class Plugin{
         $this->router = $app['router'];
         $this->url = $app['url'];
         $this->lang = $app['translator'];
-        $this->view = $app['view'];
+        $this->finder = $app['view']->getFinder();
         $this->app = $app;
         $this->name = $this->getName();
         $this->activator = $app[PluginActivatorInterface::class];
@@ -123,9 +124,19 @@ class Plugin{
             $file = 'composer.json';
         }
 
-        Arr::get($this->moduleJson,$file,function () use ($file){
-            return $this->moduleJson[$file] = json_decode($this->files->get($this->path($file)),true);
-        });
+        // Arr::get(
+        //     $this->moduleJson
+        //     ,$file,
+        //     function () use ($file){
+        //         // return $this->moduleJson[$file] = json_decode($this->files->get($this->getPath($file)),true);
+        //         return $this->moduleJson[$file] = new Json($this->getPath().'/'.$file, $this->files);
+        //     }
+        // );
+        if (!isset($this->moduleJson[$file])) {
+            $this->moduleJson[$file] = new Json($this->getPath().'/'.$file, $this->files);
+        }
+    
+        return $this->moduleJson[$file];
     }
 
     /**
