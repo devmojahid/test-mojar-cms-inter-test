@@ -18,14 +18,14 @@ class PluginServiceProvider extends ServiceProvider
     {
         $this->app->singleton(LocalPluginRepositoryContract::class, function ($app) {
             $path = base_path("extends/Plugins");
-            return new LocalPluginRepository($app , $path);
-        });        
-        
+            return new LocalPluginRepository($app, $path);
+        });
+
         $this->app->singleton(
             PluginActivatorInterface::class,
             function ($app) {
-                $activetorClass = config('plugin.db_activator');
-                if($activetorClass === null){
+                $activetorClass = config('core.db_activator');
+                if ($activetorClass === null) {
                     throw InvalidActivatorClass::missConfig();
                 }
                 return new $activetorClass($app, $app[ConfigContract::class]);

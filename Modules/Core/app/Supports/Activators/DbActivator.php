@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Supports\4s;
+namespace Modules\Core\Supports\Activators;
 
 use Illuminate\Cache\CacheManager;
 use Illuminate\Config\Repository as ConfigRepository;
@@ -10,8 +10,9 @@ use Modules\Core\Contracts\PluginActivatorInterface;
 use Modules\Core\Facades\Config;
 use Modules\Core\Supports\Plugin;
 
-class DbActivator implements PluginActivatorInterface{
-    
+class DbActivator implements PluginActivatorInterface
+{
+
     private CacheManager $cache;
     private Filesystem $file;
     private ConfigRepository $config;
@@ -28,11 +29,11 @@ class DbActivator implements PluginActivatorInterface{
 
     public function getModuleStatuses(): array
     {
-       try{
+        try {
             return $this->configContract->getConfig('module_statuses', []);
-       }catch(\Exception $e){
+        } catch (\Exception $e) {
             return [];
-       }
+        }
     }
 
     public function enable(Plugin $plugin): void
@@ -47,7 +48,7 @@ class DbActivator implements PluginActivatorInterface{
 
     public function hasStatus(Plugin $plugin, bool $status): bool
     {
-        if(! isset($this->moduleStatuses[$plugin->getName()])){
+        if (!isset($this->moduleStatuses[$plugin->getName()])) {
             return $status === false;
         }
         return $status === true;
@@ -77,9 +78,9 @@ class DbActivator implements PluginActivatorInterface{
 
     public function setActiveByName(string $name, bool $active): void
     {
-        if($active){
+        if ($active) {
             $this->moduleStatuses[$name] = ['active' => true];
-        }else{
+        } else {
             unset($this->moduleStatuses[$name]);
         }
         $this->writeData();

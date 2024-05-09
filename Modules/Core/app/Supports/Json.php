@@ -34,7 +34,7 @@ class Json
      * @param \Illuminate\Filesystem\Filesystem $filesystem
      */
     public function __construct($path, Filesystem $filesystem = null)
-    {   
+    {
         $this->path = (string) $path;
         $this->filesystem = $filesystem ?: new Filesystem();
         $this->attributes = PluginCollection::make($this->getAttributes());

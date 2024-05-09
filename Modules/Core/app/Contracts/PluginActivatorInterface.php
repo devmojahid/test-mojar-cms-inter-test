@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Core\Contracts;
 
 use Modules\Core\Supports\Plugin;
