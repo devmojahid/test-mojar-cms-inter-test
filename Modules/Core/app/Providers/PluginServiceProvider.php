@@ -7,6 +7,7 @@ use Modules\Core\Contracts\ConfigContract;
 use Modules\Core\Contracts\LocalPluginRepositoryContract;
 use Modules\Core\Contracts\PluginActivatorInterface;
 use Modules\Core\Exceptions\InvalidActivatorClass;
+use Modules\Core\Supports\Config;
 use Modules\Core\Supports\LocalPluginRepository;
 
 class PluginServiceProvider extends ServiceProvider
@@ -20,6 +21,13 @@ class PluginServiceProvider extends ServiceProvider
             $path = base_path("extends/Plugins");
             return new LocalPluginRepository($app, $path);
         });
+
+        $this->app->singleton(
+            ConfigContract::class,
+            function ($app) {
+                return new Config($app, $app['cache']);
+            }
+        );
 
         $this->app->singleton(
             PluginActivatorInterface::class,
