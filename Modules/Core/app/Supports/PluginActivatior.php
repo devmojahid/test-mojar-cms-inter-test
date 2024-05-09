@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Core\Supports;
 
-class PluginActivator
+class PluginActivatior
 {
 
     /**

@@ -19,8 +19,8 @@ class PluginServiceProvider extends ServiceProvider
         $this->app->singleton(LocalPluginRepositoryContract::class, function ($app) {
             $path = base_path("extends/Plugins");
             return new LocalPluginRepository($app , $path);
-        });
-
+        });        
+        
         $this->app->singleton(
             PluginActivatorInterface::class,
             function ($app) {
