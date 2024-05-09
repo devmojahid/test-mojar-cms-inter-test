@@ -26,4 +26,17 @@ class Config extends Model
         $configs = array_merge(GlobalData::get('configs'),$configs);
         return apply_filter('configs',$configs);
     }
+
+    public function getCongif($key, $default = null)
+    {
+        $value = self::where('key',$key)->first();
+        if(!empty($value)){
+            return $value->value;
+        }
+        $value = $value->value;
+        if(is_json($value)){
+            return json_decode($value);
+        }
+        return $default;
+    }
 }

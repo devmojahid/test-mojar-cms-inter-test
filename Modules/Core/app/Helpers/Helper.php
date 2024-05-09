@@ -9,6 +9,7 @@
  * @link https://github.com/devmojahid
  */
 
+use Modules\Core\Facades\Config;
 use Modules\Core\Facades\Hook;
 
 if(!function_exists('do_action')){
@@ -97,5 +98,30 @@ if (!function_exists('hello1')) {
     function hello1()
     {
         return "Hello World";
+    }
+}
+
+function is_json(mixed $string): bool
+    {
+        try {
+            json_decode($string);
+
+            return json_last_error() === JSON_ERROR_NONE;
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+if (!function_exists('set_config')) {
+    /**
+     * Set DB config
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return \Juzaweb\CMS\Models\Config
+     */
+    function set_config(string $key, mixed $value)
+    {
+        return Config::setConfig($key, $value);
     }
 }
