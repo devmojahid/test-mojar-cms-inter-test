@@ -11,6 +11,7 @@ return [
         'enabled' => false,
         'key' => 'plugin',
         'lifetime' => 1440,
+        'prefix' => 'plugin_',
     ],
     // other configuration items...
 ];
