@@ -17,8 +17,18 @@ class PluginController extends Controller
     {
         $plugins = Plugin::all();
         $count = Plugin::count();
-        dd($plugins);
         return view('backend::index', compact('plugins', 'count'));
+    }
+
+    /**
+     * Activate the plugin. 
+     * 
+     */
+
+    public function activate(Request $request)
+    {
+        $pluginName = $request->get('plugin');
+        Plugin::activate($pluginName);
     }
 
     /**

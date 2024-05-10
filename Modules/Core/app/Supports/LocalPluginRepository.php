@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Modules\Core\Supports;
 
 use Illuminate\Support\Traits\Macroable;
@@ -29,14 +30,14 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @var string|null
      */
 
-     protected ?string $path;
+    protected ?string $path;
 
-     /**
-      * The scanned paths.
-      *
-      * @var array
-      */
-      
+    /**
+     * The scanned paths.
+     *
+     * @var array
+     */
+
     protected array $paths = [];
 
     /**
@@ -78,7 +79,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @param string $path
      */
 
-    public function __construct(Container $app, string $path = null){
+    public function __construct(Container $app, string $path = null)
+    {
         $this->app = $app;
         $this->path = $path;
         $this->url = $app['url'];
@@ -94,7 +96,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @return $this
      */
 
-    public function addLocation(string $path){
+    public function addLocation(string $path)
+    {
         $this->paths[] = $path;
         return $this;
     }
@@ -116,20 +119,20 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @return array
      */
 
-     public function getScannedPaths(): array
-     {
-         $paths = $this->paths;
-         $paths[] = $this->getPath() . "/*";
-         return array_map(function ($path) {
-             return Str::endsWith($path, '/*') ? $path : Str::finish($path, '/*');
-         }, $paths);
-     }
+    public function getScannedPaths(): array
+    {
+        $paths = $this->paths;
+        $paths[] = $this->getPath() . "/*";
+        return array_map(function ($path) {
+            return Str::endsWith($path, '/*') ? $path : Str::finish($path, '/*');
+        }, $paths);
+    }
 
-     /**
-      * get path
-      *
-      * @return string
-      */
+    /**
+     * get path
+     *
+     * @return string
+     */
 
     public function getPath(): string
     {
@@ -149,27 +152,24 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
         foreach ($paths as $path) {
             $manifests = $this->getFiles()->glob("{$path}/composer.json");
             is_array($manifests) || $manifests = [];
-            
-            foreach ($manifests as $manifest){
+
+            foreach ($manifests as $manifest) {
                 $plugin = $this->createPlugin($this->app, dirname($manifest));
 
-                if(!$name = $plugin->getName()){
+                if (!$name = $plugin->getName()) {
                     continue;
                 }
 
-                if(!$plugin->isVisible()){
+                if (!$plugin->isVisible()) {
                     continue;
                 }
 
                 $plugins[$name] = $collection ? $plugin->getInfo()->toArray() : $plugin;
-
-                
             }
-
         }
         return $collection ? collect($plugins) : $plugins;
     }
-    
+
     /**
      * Get all plugins.
      *
@@ -179,10 +179,10 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      */
     public function all(bool $collection = false): array|Collection
     {
-       if(!$this->config('core.cache.enabled')){
-           return $this->scan();
-       }
-       return $this->formatCached($this->getCached());
+        if (!$this->config('core.cache.enabled')) {
+            return $this->scan();
+        }
+        return $this->formatCached($this->getCached());
     }
 
 
@@ -194,15 +194,15 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @return array 
      */
 
-     public function formatCached(array $cached): array
-     {
+    public function formatCached(array $cached): array
+    {
         $modules = [];
-        foreach($cached as $name => $module){
+        foreach ($cached as $name => $module) {
             $path = $module['path'];
             $modules[$name] = $this->createPlugin($this->app, $path);
         }
         return $modules;
-     }
+    }
 
     /**
      * Get cached plugins.
@@ -242,8 +242,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     public function getByStatus($status): array
     {
         $modules = [];
-        foreach($this->all() as $name => $module){
-            if($module->isStatus($status)){
+        foreach ($this->all() as $name => $module) {
+            if ($module->isStatus($status)) {
                 $modules[$name] = $module;
             }
         }
@@ -280,39 +280,39 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @return array
      */
 
-     public function allDisabled(): array
-     {
-         return $this->getByStatus(false);
-     }
+    public function allDisabled(): array
+    {
+        return $this->getByStatus(false);
+    }
 
-     /**
-      * Get count of all plugins.
-      *
-      * @return int
-      */
-      
-      public function count(): int
-      {
-          return count($this->all());
-      }
+    /**
+     * Get count of all plugins.
+     *
+     * @return int
+     */
 
-      /**
-       * Get all ordered plugins.
-       * 
-       * @param string $direction
-       * @return array
-       */
+    public function count(): int
+    {
+        return count($this->all());
+    }
+
+    /**
+     * Get all ordered plugins.
+     * 
+     * @param string $direction
+     * @return array
+     */
 
     public function getOrdered($direction = 'asc'): array
     {
         $modules = $this->allEnabled();
         uasort($modules, function (Plugin $a, Plugin $b) use ($direction) {
-            if($a->get('order') == $b->get('order')){
+            if ($a->get('order') == $b->get('order')) {
                 return 0;
             }
-            
-            if($direction == 'asc'){
-                    return $a->get('order') > $b->get('order') ? 1 : -1;
+
+            if ($direction == 'asc') {
+                return $a->get('order') > $b->get('order') ? 1 : -1;
             }
 
             return $a->get('order') < $b->get('order') ? 1 : -1;
@@ -320,31 +320,31 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
         return $modules;
     }
 
-    public function register(): void 
+    public function register(): void
     {
-        foreach($this->getOrdered() as $module){
+        foreach ($this->getOrdered() as $module) {
             $module->register();
         }
     }
 
     public function boot(): void
     {
-        foreach($this->getOrdered() as $module){
+        foreach ($this->getOrdered() as $module) {
             $module->boot();
         }
     }
 
     /**
-    * Get plugin by name.
-    * 
-    * @param string $name
-    * @return Plugin
-    */
+     * Get plugin by name.
+     * 
+     * @param string $name
+     * @return Plugin
+     */
 
     public function find(string $name): Plugin
     {
-        foreach($this->all() as $plugin){
-            if($plugin->getLowername === strtolower($name)){
+        foreach ($this->all() as $plugin) {
+            if ($plugin->getLowername === strtolower($name)) {
                 return $plugin;
             }
         }
@@ -360,8 +360,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
 
     public function findByAlias(string $alias): Plugin
     {
-        foreach($this->all() as $plugin){
-            if($plugin->getAlias() === $alias){
+        foreach ($this->all() as $plugin) {
+            if ($plugin->getAlias() === $alias) {
                 return $plugin;
             }
         }
@@ -375,27 +375,27 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @return array
      */
 
-    public function findRequirements(string $name): array 
+    public function findRequirements(string $name): array
     {
-    $requirements = [];
-    $modules = $this->findOrFail($name);
-    foreach($modules->getRequires() as $requirement){
-        $requirements[] = $this->findByAlias($requirement);
+        $requirements = [];
+        $modules = $this->findOrFail($name);
+        foreach ($modules->getRequires() as $requirement) {
+            $requirements[] = $this->findByAlias($requirement);
+        }
+        return $requirements;
     }
-    return $requirements;
-    }
-    
+
     /**
      * findOrFail plugin.
-    * 
-    * @param string $name
-    * @return Plugin
-    */
+     * 
+     * @param string $name
+     * @return Plugin
+     */
 
     public function findOrFail(string $name): Plugin
     {
         $module = $this->find($name);
-        if(!$module){
+        if (!$module) {
             throw new PluginNotFoundException("Plugin [{$name}] does not exist.");
         }
         return $module;
@@ -408,23 +408,23 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
      * @throws Exception
      */
 
-     public function collections(int $status = 1): PluginCollection
-     {
-         return new PluginCollection($status ? $this->getByStatus($status) : $this->all());
-     }
+    public function collections(int $status = 1): PluginCollection
+    {
+        return new PluginCollection($status ? $this->getByStatus($status) : $this->all());
+    }
 
-     /**
-      * GetModulePath plugin.
-      * 
-      * @param string $name
-      * @return string
-    */
+    /**
+     * GetModulePath plugin.
+     * 
+     * @param string $name
+     * @return string
+     */
 
     public function getModulePath(string $name): string
     {
-        try{
+        try {
             return $this->findOrFail($name)->getPath() . '/';
-        }catch(PluginNotFoundException $e){
+        } catch (PluginNotFoundException $e) {
             $name = Str::lower($name);
             $name = explode('/', $name)[1];
             return $this->getPath() . "/{$name}/";
@@ -447,7 +447,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     /**
      * @inheritDoc
      */
-    
+
     public function config(string $key = null, $default = null)
     {
         return $this->config->get("plugin.{$key}", $default);
@@ -462,12 +462,12 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     public function getUsedStoragePath(): string
     {
         $directory = storage_path('app/plugins');
-        if(!$this->files->exists($directory)){
+        if (!$this->files->exists($directory)) {
             $this->files->makeDirectory($directory, 0755, true);
         }
 
         $path = $directory . '/plugin.used';
-        if(!$this->files->exists($path)){
+        if (!$this->files->exists($path)) {
             $this->files->put($path, '');
         }
 
@@ -497,15 +497,15 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
         return public_path('plugins');
     }
 
-    public function assets(string $name , string $path): string
+    public function assets(string $name, string $path): string
     {
         $url = $this->url->asset("plugins/{$name}/{$path}");
         return str_replace('http://', 'https://', $url);
     }
 
-     /**
-      * @inheritDoc
-    */
+    /**
+     * @inheritDoc
+     */
     public function isEnabled(string $name)
     {
         return $this->findOrFail($name)->isEnabled();
@@ -513,8 +513,8 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
 
     /**
      * @inheritDoc
-    */
-    
+     */
+
     public function isDisabled(string $name)
     {
         return !$this->isEnabled($name);
@@ -522,7 +522,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
 
     /**
      * @inheritDoc
-    */
+     */
 
     public function enable(string $name)
     {
@@ -531,7 +531,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
 
     /**
      * @inheritDoc
-    */
+     */
 
     public function disable(string $name)
     {
@@ -541,7 +541,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     /**
      * @inheritDoc
      */
-        
+
     public function delete(string $name)
     {
         $this->findOrFail($name)->delete();

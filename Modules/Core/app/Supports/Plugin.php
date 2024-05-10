@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Modules\Core\Supports;
 
 use Composer\Autoload\ClassLoader;
@@ -18,12 +19,13 @@ use Throwable;
 use Illuminate\Support\Str;
 use Modules\Core\Supports\Json;
 
-class Plugin{
+class Plugin
+{
     use Macroable;
 
     protected Application $app;
     protected string $name;
-    
+
     /**
      * The plugin path.
      *
@@ -119,8 +121,9 @@ class Plugin{
     //     });
     // }
 
-    public function json(string $file = null){
-        if($file==null){
+    public function json(string $file = null)
+    {
+        if ($file == null) {
             $file = 'composer.json';
         }
 
@@ -133,9 +136,9 @@ class Plugin{
         //     }
         // );
         if (!isset($this->moduleJson[$file])) {
-            $this->moduleJson[$file] = new Json($this->getPath().'/'.$file, $this->files);
+            $this->moduleJson[$file] = new Json($this->getPath() . '/' . $file, $this->files);
         }
-    
+
         return $this->moduleJson[$file];
     }
 
@@ -146,17 +149,17 @@ class Plugin{
      * @return string
      */
 
-     public function getPath(string $path = null): string
-     {
-         return $this->path.($path ? DIRECTORY_SEPARATOR.$path : $path);
-     }
+    public function getPath(string $path = null): string
+    {
+        return $this->path . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
 
-     /**
-      * Set Path
-      * 
-      * @param string $path
-      * @return $this
-      */
+    /**
+     * Set Path
+     * 
+     * @param string $path
+     * @return $this
+     */
 
     public function setPath(string $path): self
     {
@@ -191,7 +194,7 @@ class Plugin{
         return $this->get('alias');
     }
 
-      /**
+    /**
      * Get priority.
      *
      * @return string
@@ -230,7 +233,7 @@ class Plugin{
         $domain = $this->getDomainName();
     }
 
-     /**
+    /**
      * Get name in lower case.
      *
      * @return string
@@ -263,7 +266,7 @@ class Plugin{
     public function getExtraMojar(string $key, $default = null): mixed
     {
         $extra = $this->get('extra', []);
-        if($laravel = Arr::get($extra, 'laravel', [])){
+        if ($laravel = Arr::get($extra, 'laravel', [])) {
             return Arr::get($laravel, $key, $default);
         }
         return $default;
@@ -275,18 +278,30 @@ class Plugin{
      * @param string $key
      * @param mixed $default
      * @return mixed
-    */
+     */
 
     public function getComposerAttr(string $key, $default = null): mixed
     {
         return $this->json('composer.json')->get($key, $default);
     }
 
-     /**
-      * Register the plugin
-      *
-      * @return void
-    */
+    /**
+     * Plugin is visible
+     * 
+     * @return bool
+     */
+
+    public function isVisible(): bool
+    {
+        return $this->get('visible', true);
+    }
+
+
+    /**
+     * Register the plugin
+     *
+     * @return void
+     */
 
     public function register(): void
     {
@@ -339,16 +354,17 @@ class Plugin{
             $this->app->register($provider);
         }
 
-        if(config('core.plugin_autoload')){
-            $providers = array_merge( 
-            $this->getExtraLaravel('providers', []),
-            $providers);
+        if (config('core.plugin_autoload')) {
+            $providers = array_merge(
+                $this->getExtraLaravel('providers', []),
+                $providers
+            );
         }
 
-        try {   
+        try {
             (new ProviderRepository($this->app, new Filesystem(), $this->app->getCachedServicesPath()))
                 ->load($providers);
-        }catch(\Throwable $e){
+        } catch (\Throwable $e) {
             $this->disable();
             throw $e;
         }
@@ -365,7 +381,7 @@ class Plugin{
     public function getExtraLaravel(string $key, $default = null): mixed
     {
         $extra = $this->get('extra', []);
-        if($laravel = Arr::get($extra, 'laravel', [])){
+        if ($laravel = Arr::get($extra, 'laravel', [])) {
             return Arr::get($laravel, $key, $default);
         }
         return $default;
@@ -377,16 +393,16 @@ class Plugin{
      * @return string
      */
 
-     public function getCachedServicesPath(): string
-     {
-         return Str::replaceLast('service.php', $this->getSnakeName()."_module.php", $this->app->getCachedServicesPath());
-     }
+    public function getCachedServicesPath(): string
+    {
+        return Str::replaceLast('service.php', $this->getSnakeName() . "_module.php", $this->app->getCachedServicesPath());
+    }
 
-     /**
-      * Get snake name
-      *
-      * @return string
-    */
+    /**
+     * Get snake name
+     *
+     * @return string
+     */
 
     public function getSnakeName(): string
     {
@@ -398,7 +414,7 @@ class Plugin{
      * 
      * @return void
      * 
-    */
+     */
 
     public function disable(): void
     {
@@ -412,20 +428,20 @@ class Plugin{
      * Flash the cache
      * 
      * @return void
-    */
+     */
 
     public function flashcache(): void
     {
-       if(config('core,cache.enabled')){
-           $this->cache->store()->forget("plugin.{$this->name}.json");
-       }
+        if (config('core,cache.enabled')) {
+            $this->cache->store()->forget("plugin.{$this->name}.json");
+        }
     }
 
     /**
      * Get studly name
      * 
      * @return string
-    */
+     */
 
     public function getStudlyName(): string
     {
@@ -440,7 +456,7 @@ class Plugin{
      * 
      * @param string $status
      * @return bool
-    */
+     */
 
     public function isStatus(bool $status): bool
     {
@@ -477,16 +493,16 @@ class Plugin{
 
     public function setActive(): bool
     {
-        $this->activator->setActive($this,true);
+        $this->activator->setActive($this, true);
         return true;
     }
 
-     /**
+    /**
      * Disable the plugin
      * 
      * @return void
      * 
-    */
+     */
 
     public function enable(): void
     {
@@ -502,7 +518,7 @@ class Plugin{
      * Run the plugin migration
      * 
      * @return void
-    */
+     */
 
     public function runMigrate(): void
     {
@@ -516,7 +532,7 @@ class Plugin{
      * Publish the plugin assets
      * 
      * @return void
-    */
+     */
 
 
     public function publishAssets(): void
@@ -530,7 +546,7 @@ class Plugin{
      * Delete the plugin
      * 
      * @return bool
-    */
+     */
 
     public function delete(): bool
     {
@@ -546,7 +562,7 @@ class Plugin{
      * 
      * @param string $event
      * @return void
-    */
+     */
     public function fireEvent(string $event): void
     {
         $this->app['events']->dispatch("plugin.{$event}: {$this->getLowerName()}", [$this]);
@@ -556,15 +572,15 @@ class Plugin{
      * Auto load PSR-4
      * 
      * @return void
-    */
+     */
 
     public function autoloadPSR4(): void
     {
         $locadMaps = $this->activator->getAutoloadInfo($this);
         $loader = new ClassLoader();
 
-        foreach ($locadMaps as $loaderMap){
-            if(empty($loaderMap['namespace']) || empty($loaderMap['path'])){
+        foreach ($locadMaps as $loaderMap) {
+            if (empty($loaderMap['namespace']) || empty($loaderMap['path'])) {
                 continue;
             }
 
@@ -583,7 +599,7 @@ class Plugin{
     {
         $files = Arr::get($this->get('autoload', []), 'files', []);
         foreach ($files as $file) {
-           include $this->path . DIRECTORY_SEPARATOR . $file;
+            include $this->path . DIRECTORY_SEPARATOR . $file;
         }
     }
 }
