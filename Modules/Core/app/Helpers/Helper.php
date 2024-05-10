@@ -125,3 +125,16 @@ if (!function_exists('set_config')) {
         return Config::setConfig($key, $value);
     }
 }
+
+if(!function_exists('cache_prifix')){
+    /**
+     * Get cache prifix
+     *
+     * @param string $prifix
+     * @return string
+     */
+    function cache_prifix($prifix = '')
+    {
+        return config('core.cache.prefix').$prifix;
+    }
+}
