@@ -28,7 +28,8 @@ class PluginController extends Controller
     public function activate(Request $request)
     {
         $pluginName = $request->get('plugin');
-        Plugin::activate($pluginName);
+        Plugin::enable($pluginName);
+        return redirect()->back();
     }
 
     /**

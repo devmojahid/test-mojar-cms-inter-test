@@ -10,7 +10,7 @@ use Modules\Core\Facades\GlobalData;
 class Config extends Model
 {
     use HasFactory;
-    protected $timestamps = false;
+    public $timestamps = false;
     protected $table = 'configs';
     /**
      * The attributes that are mass assignable.
@@ -23,18 +23,18 @@ class Config extends Model
     public static function configs()
     {
         $configs = config('config.config');
-        $configs = array_merge(GlobalData::get('configs'),$configs);
-        return apply_filter('configs',$configs);
+        $configs = array_merge(GlobalData::get('configs'), $configs);
+        return apply_filter('configs', $configs);
     }
 
     public function getCongif($key, $default = null)
     {
-        $value = self::where('key',$key)->first();
-        if(!empty($value)){
+        $value = self::where('key', $key)->first();
+        if (!empty($value)) {
             return $value->value;
         }
         $value = $value->value;
-        if(is_json($value)){
+        if (is_json($value)) {
             return json_decode($value);
         }
         return $default;

@@ -50,4 +50,15 @@ class PluginServiceProvider extends ServiceProvider
     {
         return [LocalPluginRepositoryContract::class, 'plugins'];
     }
+
+    /**
+     * Boot the application events.
+     */
+
+    public function boot(): void
+    {
+        //get the path of the plugin
+        $path = base_path("extends/Plugins/*");
+        $this->loadMigrationsFrom($path . '/database/migrations');
+    }
 }

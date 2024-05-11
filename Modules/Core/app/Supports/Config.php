@@ -15,7 +15,6 @@ class Config implements ConfigContract
     protected CacheManager $cache;
     public function __construct(Container $app, CacheManager $cache)
     {
-
         $this->cache = $cache;
         if (Installer::alreadyInstalled()) {
             $this->configs = $this->cache
@@ -51,7 +50,17 @@ class Config implements ConfigContract
 
     public function setConfig(string $key, string|array $value = null): ConfigModel
     {
-        return new Config();
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+        $config = ConfigModel::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value]
+        );
+
+        $this->configs[$key] = $value;
+        $this->cache->store('file')->forever($this->getCacheKey(), $this->configs);
+        return $config;
     }
 
     public function getConfigs(array $keys, string|array $default = null): array

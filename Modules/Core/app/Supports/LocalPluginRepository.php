@@ -344,7 +344,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
     public function find(string $name): Plugin
     {
         foreach ($this->all() as $plugin) {
-            if ($plugin->getLowername === strtolower($name)) {
+            if ($plugin->getLowername() === strtolower($name)) {
                 return $plugin;
             }
         }
