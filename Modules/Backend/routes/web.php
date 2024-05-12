@@ -23,5 +23,5 @@ Route::group([], function () {
 
 Route::group(['prefix' => 'admin/plugins'], function () {
     Route::get('/', [PluginController::class, 'index'])->name('admin.plugins.index');
-    Route::post('/actiate/{plugin}', [PluginController::class, 'activate'])->name('backend.plugin.activate');
+    Route::post('/actiate', [PluginController::class, 'activate'])->name('backend.plugin.activate');
 });
