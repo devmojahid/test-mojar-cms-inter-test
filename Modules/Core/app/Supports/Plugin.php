@@ -80,6 +80,8 @@ class Plugin
         $this->app = $app;
         $this->name = $this->getName();
         $this->activator = $app[PluginActivatorInterface::class];
+
+        $this->autoloadPSR4();
     }
 
     /**
@@ -523,8 +525,8 @@ class Plugin
     public function runMigrate(): void
     {
         Artisan::call('migrate', [
-            'module' => $this->name,
-            '--force' => true,
+            '--path' => $this->getPath('database/migrations'),
+            '--force' => true
         ]);
     }
 
@@ -537,8 +539,9 @@ class Plugin
 
     public function publishAssets(): void
     {
-        Artisan::call('module:publish', [
-            'module' => $this->get('name')
+        Artisan::call('vendor:publish', [
+            '--tag' => $this->getLowerName() . '-assets',
+            '--force' => true
         ]);
     }
 
@@ -576,7 +579,7 @@ class Plugin
 
     public function autoloadPSR4(): void
     {
-        $locadMaps = $this->activator->getAutoloadInfo($this);
+        $locadMaps = $this->activator->getAutoloadInfo($this) ?? [];
         $loader = new ClassLoader();
 
         foreach ($locadMaps as $loaderMap) {
@@ -588,7 +591,6 @@ class Plugin
         }
         $loader->register();
     }
-
     /**
      * Register Files 
      * 
