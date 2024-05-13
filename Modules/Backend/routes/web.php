@@ -24,8 +24,5 @@ Route::group([], function () {
 Route::group(['prefix' => 'admin/plugins'], function () {
     Route::get('/', [PluginController::class, 'index'])->name('admin.plugins.index');
     Route::post('/actiate', [PluginController::class, 'activate'])->name('backend.plugin.activate');
-<<<<<<< HEAD
+
 });
-=======
-});
->>>>>>> 6393bb26d5c9ad5bcd566350e9a96e66e50940ba

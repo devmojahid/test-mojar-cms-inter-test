@@ -32,7 +32,7 @@ class PluginServiceProvider extends ServiceProvider
         $this->app->singleton(
             PluginActivatorInterface::class,
             function ($app) {
-                $activetorClass = config('core.db_activator');
+                $activetorClass = config("app.db_activator");
                 if ($activetorClass === null) {
                     throw InvalidActivatorClass::missConfig();
                 }

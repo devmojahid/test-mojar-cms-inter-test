@@ -6,7 +6,7 @@
     <p>Module: {!! config('backend.name') !!}</p>
     @foreach ($plugins as $plugin)
         <p>{{ $plugin->get('name') }}</p>
-        <p>{{ $plugin->isEnabled() ? 'active' : 'inactive' }}</p>
+        <p>{{ $plugin->isEnabled() == "true" ? "Activated":"Not Activate" }}</p>
     @endforeach
 
 
