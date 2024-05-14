@@ -308,11 +308,10 @@ class Plugin
     public function register(): void
     {
         $this->registerProviders();
-
-        $adminRouter = $this->getPath() . "src/routes/admin.php";
-        $apiRouter = $this->getPath() . "src/routes/api.php";
-        $webHookRouter = $this->getPath() . "src/routes/webhook.php";
-        $themeRouter = $this->getPath() . "src/routes/theme.php";
+        $adminRouter = $this->getPath() . "/src/routes/admin.php";
+        $apiRouter = $this->getPath() . "/src/routes/api.php";
+        $webHookRouter = $this->getPath() . "/src/routes/webhook.php";
+        $themeRouter = $this->getPath() . "/src/routes/theme.php";
 
         if (file_exists($adminRouter)) {
             $this->router->middleware('admin')

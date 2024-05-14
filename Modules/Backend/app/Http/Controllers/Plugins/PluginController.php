@@ -30,9 +30,9 @@ class PluginController extends Controller
         $pluginName = $request->get('plugin');
         Plugin::enable($pluginName);
         $plugin = Plugin::find($pluginName);
-        try{
+        try {
             $plugin->runMigrate();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             dd($e->getMessage());
         }
         return redirect()->back();

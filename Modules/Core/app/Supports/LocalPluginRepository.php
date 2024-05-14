@@ -305,6 +305,7 @@ class LocalPluginRepository implements LocalPluginRepositoryContract
 
     public function getOrdered($direction = 'asc'): array
     {
+
         $modules = $this->allEnabled();
         uasort($modules, function (Plugin $a, Plugin $b) use ($direction) {
             if ($a->get('order') == $b->get('order')) {
