@@ -48,6 +48,7 @@ class DbActivator implements PluginActivatorInterface
 
     public function hasStatus(Plugin $plugin, bool $status): bool
     {
+       
         if (!isset($this->moduleStatuses[$plugin->getName()])) {
             return $status === false;
         }
@@ -65,9 +66,9 @@ class DbActivator implements PluginActivatorInterface
         $this->writeData();
     }
 
-    public function getAutoloadInfo(Plugin $plugin): ?array
+    public function getAutoloadInfo(Plugin $plugin): array
     {
-        return $this->moduleStatuses[$plugin->getName()] ?? null;
+        return $this->moduleStatuses[$plugin->getName()] ?? [];
     }
 
     public function reset(): void
@@ -79,15 +80,17 @@ class DbActivator implements PluginActivatorInterface
     public function setActiveByName(string $name, bool $active): void
     {
         if ($active) {
-            $this->moduleStatuses[$name] = ['active' => true];
+            $this->moduleStatuses[$name] = $name;
         } else {
             unset($this->moduleStatuses[$name]);
         }
+        
         $this->writeData();
     }
 
     private function writeData(): void
     {
         set_config('plugin_statuse', $this->moduleStatuses);
+        $this->configContract->setConfig('plugin_statuse', $this->moduleStatuses);
     }
 }

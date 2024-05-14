@@ -13,7 +13,7 @@ class PluginController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() 
     {
         $plugins = Plugin::all();
         $count = Plugin::count();
@@ -30,11 +30,18 @@ class PluginController extends Controller
         $pluginName = $request->get('plugin');
         Plugin::enable($pluginName);
         $plugin = Plugin::find($pluginName);
-        try {
-            $plugin->runMigrate();
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
+        return redirect()->back();
+    }
+
+    /**
+     * Deactivate the plugin.
+     */
+
+    public function deactivate(Request $request)
+    {
+        $pluginName = $request->get('plugin');
+        Plugin::disable($pluginName);
+        $plugin = Plugin::find($pluginName);
         return redirect()->back();
     }
 

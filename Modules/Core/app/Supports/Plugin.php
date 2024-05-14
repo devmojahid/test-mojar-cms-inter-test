@@ -81,7 +81,7 @@ class Plugin
         $this->name = $this->getName();
         $this->activator = $app[PluginActivatorInterface::class];
 
-        $this->autoloadPSR4();
+        // $this->autoloadPSR4();
     }
 
     /**
@@ -246,13 +246,9 @@ class Plugin
     }
 
 
-    /**
-     * Get the plugin domain name.
-     *
-     * @return string
-     */
 
-    public function getDomainName(): string
+
+    public function getDomainName()
     {
         return $this->getExtraMojar('domain');
     }
@@ -419,6 +415,7 @@ class Plugin
 
     public function disable(): void
     {
+      
         $this->fireEvent('disabling');
         $this->activator->disable($this);
         $this->flashcache();

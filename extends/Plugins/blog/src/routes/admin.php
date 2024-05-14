@@ -6,4 +6,4 @@ Route::get('test', function () {
 
 Route::get("zahid", function () {
     return "Hello from Zahid";
-})->name('admin.zahid');
+});

@@ -17,14 +17,29 @@ class Config implements ConfigContract
     {
         $this->cache = $cache;
         if (Installer::alreadyInstalled()) {
-            $this->configs = $this->cache
-                ->store('file')
-                ->rememberForever(
-                    $this->getCacheKey(),
-                    function () {
-                        return ConfigModel::all()->pluck('value', 'key')->toArray();
+            $this->configs = ConfigModel::get(
+                ['key', 'value']
+            )->keyBy('key')
+                ->map(
+                    function ($config) {
+                        return $config->value;
                     }
-                );
+                )->toArray();
+            // $this->configs = $this->cache
+            //     ->store('file')
+            //     ->rememberForever(
+            //         $this->getCacheKey(),
+            //         function () {
+            //             return ConfigModel::get(
+            //                 ['key', 'value']
+            //             )->keyBy('key')
+            //                 ->map(
+            //                     function ($config) {
+            //                         return $config->value;
+            //                     }
+            //                 )->toArray();
+            //         }
+            //     );
         }
     }
 
@@ -53,6 +68,7 @@ class Config implements ConfigContract
         if (is_array($value)) {
             $value = json_encode($value);
         }
+        
         $config = ConfigModel::updateOrCreate(
             ['key' => $key],
             ['value' => $value]

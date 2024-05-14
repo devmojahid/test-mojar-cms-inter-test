@@ -6,7 +6,8 @@
     <p>Module: {!! config('backend.name') !!}</p>
     @foreach ($plugins as $plugin)
         <p>{{ $plugin->get('name') }}</p>
-        <p>{{ $plugin->isEnabled() == "true" ? "Activated":"Not Activate" }}</p>
+        <p>{{ $plugin->isEnabled() ? 'active' : 'inactive' }}</p>
+        
     @endforeach
 
 
@@ -15,14 +16,12 @@
     <form action="{{ route('backend.plugin.activate') }}" method="post">
         @csrf
         <input type="hidden" name="plugin" value="{{ $plugin->get('name') }}">
-        <button type="submit">Activate Plugin 1</button>
+        <button type="submit">Activate Plugin</button>
     </form>
 
-    {{-- deactivate the plugin --}}
-
-    {{-- <form action="{{ route('backend.plugin.deactivate') }}" method="post">
+    <form action="{{ route('backend.plugin.deactivate') }}" method="post">
         @csrf
         <input type="hidden" name="plugin" value="{{ $plugin->get('name') }}">
-        <button type="submit">Deactivate Plugin 1</button>
-    </form> --}}
+        <button type="submit">Deactivate Plugin</button>
+    </form>
 @endsection

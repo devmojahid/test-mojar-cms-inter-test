@@ -10,6 +10,6 @@ class Installer{
 
     public static function installedPath()
     {
-        return storage_path('installed');
+        return storage_path('app/installed');
     }
 }
