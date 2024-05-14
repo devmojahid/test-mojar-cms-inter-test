@@ -30,7 +30,7 @@ class DbActivator implements PluginActivatorInterface
     public function getModuleStatuses(): array
     {
         try {
-            return $this->configContract->getConfig('module_statuses', []);
+            return $this->configContract->getConfig('plugin_statuse', []);
         } catch (\Exception $e) {
             return [];
         }
