@@ -310,9 +310,12 @@ class Plugin
         $themeRouter = $this->getPath() . "/src/routes/theme.php";
 
         if (file_exists($adminRouter)) {
-            $this->router->middleware('admin')
+            $this->router
                 ->prefix(config('plugin.admin_prefix'))
                 ->group($adminRouter);
+            // $this->router->middleware('admin')
+            //     ->prefix(config('plugin.admin_prefix'))
+            //     ->group($adminRouter);
         }
 
         if (file_exists($apiRouter)) {
@@ -415,7 +418,7 @@ class Plugin
 
     public function disable(): void
     {
-      
+
         $this->fireEvent('disabling');
         $this->activator->disable($this);
         $this->flashcache();

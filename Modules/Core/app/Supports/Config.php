@@ -59,7 +59,6 @@ class Config implements ConfigContract
                 $value = Arr::get($value, implode('.', $configKeys), $default);
             }
         }
-
         return $value;
     }
 
@@ -68,7 +67,7 @@ class Config implements ConfigContract
         if (is_array($value)) {
             $value = json_encode($value);
         }
-        
+
         $config = ConfigModel::updateOrCreate(
             ['key' => $key],
             ['value' => $value]
@@ -77,6 +76,8 @@ class Config implements ConfigContract
         $this->configs[$key] = $value;
         $this->cache->store('file')->forever($this->getCacheKey(), $this->configs);
         return $config;
+
+        dd($config);
     }
 
     public function getConfigs(array $keys, string|array $default = null): array

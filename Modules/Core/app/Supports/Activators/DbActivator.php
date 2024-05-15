@@ -48,7 +48,7 @@ class DbActivator implements PluginActivatorInterface
 
     public function hasStatus(Plugin $plugin, bool $status): bool
     {
-       
+
         if (!isset($this->moduleStatuses[$plugin->getName()])) {
             return $status === false;
         }
@@ -84,7 +84,7 @@ class DbActivator implements PluginActivatorInterface
         } else {
             unset($this->moduleStatuses[$name]);
         }
-        
+
         $this->writeData();
     }
 
