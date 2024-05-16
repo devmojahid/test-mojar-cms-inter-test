@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Supports;
 
-class Theme{
-    
+use Modules\Core\Interfaces\ThemeInterface;
+
+class Theme implements ThemeInterface
+{
 }

@@ -6,8 +6,11 @@ use Illuminate\Container\Container;
 use Modules\Core\Contracts\LocalThemeRepositoryContract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Modules\Core\Exceptions\ThemeNotFoundException;
 use Modules\Core\Interfaces\ThemeInterface;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class LocalThemeRepository implements LocalThemeRepositoryContract
 {
@@ -15,7 +18,7 @@ class LocalThemeRepository implements LocalThemeRepositoryContract
 
     protected string $basePath;
 
-    protected Theme $theme;
+    protected Theme $currentTheme;
 
     public function __construct(Container $app, string $path)
     {
@@ -34,13 +37,13 @@ class LocalThemeRepository implements LocalThemeRepositoryContract
     {
         $themeDirectory = File::directories($this->basePath);
         $themes = [];
-        foreach($themeDirectory as $themePath){
+        foreach ($themeDirectory as $themePath) {
             $theme = $this->createTheme(
                 $this->app,
                 $themePath
             );
 
-            if(!$name = $theme->getName()){
+            if (!$name = $theme->getName()) {
                 continue;
             }
 
@@ -57,8 +60,8 @@ class LocalThemeRepository implements LocalThemeRepositoryContract
      */
     public function find(string $name): ?ThemeInterface
     {
-        foreach($this->all() as $theme){
-            if($theme->getLower() == strtolower($name)){
+        foreach ($this->all() as $theme) {
+            if ($theme->getLower() == strtolower($name)) {
                 return $theme;
             }
         }
@@ -75,7 +78,7 @@ class LocalThemeRepository implements LocalThemeRepositoryContract
 
     public function findOrFail(string $name): ThemeInterface
     {
-        if(!$theme = $this->find($name)){
+        if (!$theme = $this->find($name)) {
             throw new ThemeNotFoundException("Theme [{$name}] not found");
         }
         return $theme;
@@ -89,8 +92,100 @@ class LocalThemeRepository implements LocalThemeRepositoryContract
 
     public function currentTheme(): Theme
     {
-        if(isset($this->currentTheme)){
+        if (isset($this->currentTheme)) {
             return $this->currentTheme;
         }
+
+        return $this->currentTheme = $this->findOrFail($this->app['config']->get('core.theme'));
+    }
+
+    /**
+     * Retrive all themes
+     * 
+     * @param bool $collection
+     * @return array|Collection
+     */
+
+    public function all(bool $collection = false): array|Collection
+    {
+        return $this->scan($collection);
+    }
+
+    /**
+     * Has theme
+     * 
+     * @param string $name
+     * @return bool
+     */
+
+    public function has(string $name): bool
+    {
+        return $this->find($name) !== null;
+    }
+
+    /**
+     * Delete a theme
+     * 
+     * @param string $name
+     * @return bool
+     */
+
+    public function delete(string $name): bool
+    {
+        return $this->findOrFail($name)->delete();
+    }
+
+    /**
+     * Render a theme
+     * 
+     * @param string $view
+     * @param array $params
+     * @param string $theme
+     * @return string|View|Factory|Response
+     */
+
+    public function render(string $view, array $params = [], ?string $theme = null): string|View|Factory|Response
+    {
+        $theme = $theme ? $this->findOrFail($theme) : $this->currentTheme();
+        return $this->themeRender($theme)->render($view, $params);
+    }
+
+    /**  
+     * Parse a theme
+     * 
+     * @param mixed $params
+     * @param string $theme
+     * @return mixed
+     */
+
+    public function parseParam(mixed $params, ?string $theme = null): mixed
+    {
+        $theme = $theme ? $this->findOrFail($theme) : $this->currentTheme();
+        return $this->themeRender($theme)->parseParam($params);
+    }
+
+    /**
+     * Theme render
+     * 
+     * @param Theme $theme
+     * @return themeRender
+     */
+
+    protected function themeRender(ThemeInterface $theme): themeRender
+    {
+        return $this->app->make(ThemeRender::class, ['theme' => $theme]);
+    }
+
+    /**
+     * Create a theme
+     * 
+     * @param Container $app
+     * @param string $path
+     * @return Theme
+     */
+
+    protected function createTheme(...$args): Theme
+    {
+        return new Theme(...$args);
     }
 }

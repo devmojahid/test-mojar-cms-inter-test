@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Response;
 use Modules\Core\Interfaces\ThemeInterface;
+use Modules\Core\Supports\Theme;
 
 interface LocalThemeRepositoryContract
 {
@@ -15,7 +16,7 @@ interface LocalThemeRepositoryContract
      * 
      * @param bool $collection
      * @return array|Collection
-    */
+     */
 
     public function scan(bool $collection = false): array|Collection;
 
@@ -24,7 +25,7 @@ interface LocalThemeRepositoryContract
      * 
      * @param string $name this is the name of the theme
      * @return ThemeInterface|null  return the theme if found
-    */
+     */
 
     public function find(string $name): ?ThemeInterface;
 
@@ -34,7 +35,7 @@ interface LocalThemeRepositoryContract
      * @param string $name this is the name of the theme
      * @return ThemeInterface  return the theme if found
      * @throws ThemeNotFoundException if the theme is not found
-    */
+     */
 
     public function findOrFail(string $name): ThemeInterface;
 
@@ -46,7 +47,7 @@ interface LocalThemeRepositoryContract
      */
 
     public function all(bool $collection = false): array|Collection;
-    
+
     /**
      * Get the active theme
      * 
