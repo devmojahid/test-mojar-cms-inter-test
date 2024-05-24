@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Backend\Http\Controllers\{
     BackendController,
+    PageController,
     Plugins\PluginController
 };
 
@@ -25,5 +26,19 @@ Route::group(['prefix' => 'admin/plugins'], function () {
     Route::get('/', [PluginController::class, 'index'])->name('admin.plugins.index');
     Route::post('/actiate', [PluginController::class, 'activate'])->name('backend.plugin.activate');
     Route::post('/deactivate', [PluginController::class, 'deactivate'])->name('backend.plugin.deactivate');
+});
 
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', function () {
+        return view('backend::dashboard');
+    })->name('admin.dashboard');
+
+    Route::get("/menu", function () {
+        return view('backend::menu');
+    })->name('admin.menu');
+
+    Route::get("add-page", [PageController::class, "index"])->name('admin.add-page');
+
+    Route::post("store-page", [PageController::class, "store"])->name('admin.store-page');
 });
