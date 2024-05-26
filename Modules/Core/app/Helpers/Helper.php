@@ -9,10 +9,11 @@
  * @link https://github.com/devmojahid
  */
 
+use Illuminate\Contracts\Support\DeferringDisplayableValue;
 use Modules\Core\Facades\Config;
 use Modules\Core\Facades\Hook;
 
-if(!function_exists('do_action')){
+if (!function_exists('do_action')) {
     /**
      * Do action
      *
@@ -26,7 +27,7 @@ if(!function_exists('do_action')){
     }
 }
 
-if(!function_exists('add_action')){
+if (!function_exists('add_action')) {
     /**
      * Add action
      *
@@ -42,7 +43,7 @@ if(!function_exists('add_action')){
     }
 }
 
-if(!function_exists('apply_filter')){
+if (!function_exists('apply_filter')) {
     /**
      * Apply filter
      *
@@ -57,7 +58,7 @@ if(!function_exists('apply_filter')){
     }
 }
 
-if(!function_exists('add_filter')){
+if (!function_exists('add_filter')) {
     /**
      * Add filter
      *
@@ -73,7 +74,7 @@ if(!function_exists('add_filter')){
     }
 }
 
-if(!function_exists('hello')){
+if (!function_exists('hello')) {
     /**
      * Remove action
      *
@@ -82,7 +83,8 @@ if(!function_exists('hello')){
      * @param int $priority
      * @return void
      */
-    function hello(){
+    function hello()
+    {
         return 'Hello World';
     }
 }
@@ -102,15 +104,15 @@ if (!function_exists('hello1')) {
 }
 
 function is_json(mixed $string): bool
-    {
-        try {
-            json_decode($string);
+{
+    try {
+        json_decode($string);
 
-            return json_last_error() === JSON_ERROR_NONE;
-        } catch (\Throwable $e) {
-            return false;
-        }
+        return json_last_error() === JSON_ERROR_NONE;
+    } catch (\Throwable $e) {
+        return false;
     }
+}
 
 if (!function_exists('set_config')) {
     /**
@@ -126,7 +128,7 @@ if (!function_exists('set_config')) {
     }
 }
 
-if(!function_exists('cache_prifix')){
+if (!function_exists('cache_prifix')) {
     /**
      * Get cache prifix
      *
@@ -135,6 +137,30 @@ if(!function_exists('cache_prifix')){
      */
     function cache_prifix($prifix = '')
     {
-        return config('core.cache.prefix').$prifix;
+        return config('core.cache.prefix') . $prifix;
+    }
+}
+
+
+if (!function_exists('e')) {
+
+    /**
+     * Escape HTML entities in a string.
+     *
+     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|string|null $value
+     * @param bool $doubleEncode
+     * @return string
+     */
+
+    function e($value, $doubleEncode = true)
+    {
+        if ($value instanceof DeferringDisplayableValue) {
+            $value = $value->resolveDisplayableValue();
+        }
+
+        if ($value instanceof \Illuminate\Contracts\Support\Htmlable) {
+            return $value->toHtml();
+        }
+        return htmlspecialchars($value = "", ENT_QUOTES, 'UTF-8', $doubleEncode);
     }
 }

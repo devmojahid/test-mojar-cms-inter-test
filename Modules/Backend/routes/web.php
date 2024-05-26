@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Backend\Http\Controllers\{
     BackendController,
+    MenuController,
     PageController,
     Plugins\PluginController
 };
@@ -34,9 +35,7 @@ Route::group(['prefix' => 'admin'], function () {
         return view('backend::dashboard');
     })->name('admin.dashboard');
 
-    Route::get("/menu", function () {
-        return view('backend::menu');
-    })->name('admin.menu');
+    Route::get("/menu", [MenuController::class, "index"])->name('admin.menu');
 
     Route::get("add-page", [PageController::class, "index"])->name('admin.add-page');
 

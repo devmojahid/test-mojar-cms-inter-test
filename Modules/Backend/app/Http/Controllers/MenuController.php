@@ -14,7 +14,9 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return view('backend::index');
+        add_action("menu_builder_sidebar", [$this, "menu_builder_sidebar"]);
+
+        return view('backend::menu');
     }
 
     /**
@@ -28,7 +30,7 @@ class MenuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         //
     }
@@ -52,7 +54,7 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         //
     }
@@ -63,5 +65,14 @@ class MenuController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function menu_builder_sidebar()
+    {
+        echo e(
+            view('backend::menu.menu-builder-sidebar', [
+                'menus' => apply_filter('menu_builder_sidebar_menus', [])
+            ])
+        );
     }
 }
