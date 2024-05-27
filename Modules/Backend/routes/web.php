@@ -32,6 +32,11 @@ Route::group(['prefix' => 'admin/plugins'], function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
+
+        add_filter("somthing_filter_dashboard", function ($title) {
+            return ucwords("hello, $title");
+        }, 10, 1);
+
         return view('backend::dashboard');
     })->name('admin.dashboard');
 

@@ -2,7 +2,8 @@
 
 namespace Modules\Core\Supports\Hooks;
 
-class Filter extends Event{
+class Filter extends Event
+{
 
     /**
      * Holds the value
@@ -30,27 +31,28 @@ class Filter extends Event{
      * 
      */
 
-     public function fire($action, $args)
-     {
+    public function fire($action, $args)
+    {
         $this->value = isset($args[0]) ? $args[0] : null;
+        $this->value = $args;
 
-         $listeners = $this->listeners->where('hook', $action);
- 
-         if($listeners->isEmpty()){
-             return $args;
-         }
- 
-         $listeners->each(function($listener) use ($args){
-             $parameters = [];
-             for($i = 0; $i < $listener['args']; $i++){
-                 $value = $args[$i] ?? null;
-                 $parameters[] = $value;
-             }
-             call_user_func_array($listener['callback'], $parameters);
-         });
+        $listeners = $this->listeners->where('hook', $action);
 
-         echo $this->value;
-     }
+        if ($listeners->isEmpty()) {
+            return $args;
+        }
+
+        $listeners->each(function ($listener) use ($args) {
+            $parameters = [];
+            for ($i = 0; $i < $listener['args']; $i++) {
+                $value = $args[$i] ?? null;
+                $parameters[] = $value;
+            }
+            call_user_func_array($listener['callback'], $parameters);
+        });
+
+        return $this->value;
+    }
 
     /**
      * Remove filter

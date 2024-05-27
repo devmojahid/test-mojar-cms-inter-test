@@ -37,9 +37,9 @@ abstract class Event{
         /*
             * Check if the callback is callable
         */
-        if(!is_callable($callback)){
-            throw new \Exception('Invalid callback');
-        }
+        // if(!is_callable($callback)){
+        //     throw new \Exception('Invalid callback');
+        // }
         
          $this->listeners->push([
              'hook' => $hook,
