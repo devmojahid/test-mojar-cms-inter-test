@@ -7,6 +7,8 @@ use Modules\Backend\Http\Controllers\{
     PageController,
     Plugins\PluginController
 };
+use Modules\Backend\Http\Controllers\Auth\LoginController;
+use Modules\Backend\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +47,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("add-page", [PageController::class, "index"])->name('admin.add-page');
 
     Route::post("store-page", [PageController::class, "store"])->name('admin.store-page');
+
+    Route::get("login", [LoginController::class, "index"])->name('admin.login');
+    // Route::post("login", [LoginController::class, "store"])->name('admin.login');
+
+    Route::get("register", [RegisterController::class, "index"])->name('admin.register');
+    Route::post("register", [RegisterController::class, "store"])->name('admin.register');
 });
