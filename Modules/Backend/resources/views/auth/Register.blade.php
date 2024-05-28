@@ -10,19 +10,19 @@
             @csrf
             <div class="form-group">
                 <input type="text" name="name" class="form-control form-control-lg" id="nameField"
-                    placeholder="Name Hear">
+                    placeholder="Name Hear" required>
             </div>
             <div class="form-group">
                 <input type="email" name="email" class="form-control form-control-lg" id="emailField"
-                    placeholder="Username">
+                    placeholder="Username" required>
             </div>
             <div class="form-group">
                 <input type="password" name="password" class="form-control form-control-lg" id="passwordField"
-                    placeholder="Password">
+                    placeholder="Password" required>
             </div>
             <div class="form-group">
                 <input type="password" name="password_confirmation" class="form-control form-control-lg"
-                    id="passwordFieldConfirm" placeholder="Confirm Password">
+                    id="passwordFieldConfirm" placeholder="Confirm Password" required>
             </div>
 
             <div class="mt-3">

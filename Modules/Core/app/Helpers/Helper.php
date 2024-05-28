@@ -10,6 +10,7 @@
  */
 
 use Illuminate\Contracts\Support\DeferringDisplayableValue;
+use Modules\Core\Contracts\ConfigContract;
 use Modules\Core\Facades\Config;
 use Modules\Core\Facades\Hook;
 
@@ -113,6 +114,27 @@ function is_json(mixed $string): bool
         return false;
     }
 }
+
+
+if (!function_exists('get_config')) {
+    /**
+     * Get DB config
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return array|string|null
+     */
+    function get_config(string $key, mixed $default = null): array|string|null
+    {
+        try {
+            return app(ConfigContract::class)->getConfig($key, $default);
+        } catch (\Exception $e) {
+            return $default;
+        }
+    }
+}
+
+
 
 if (!function_exists('set_config')) {
     /**

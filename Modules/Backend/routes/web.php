@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post("store-page", [PageController::class, "store"])->name('admin.store-page');
 
     Route::get("login", [LoginController::class, "index"])->name('admin.login');
+    Route::post("login", [LoginController::class, "store"])->name('admin.login');
     // Route::post("login", [LoginController::class, "store"])->name('admin.login');
 
     Route::get("register", [RegisterController::class, "index"])->name('admin.register');

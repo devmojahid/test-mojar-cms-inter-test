@@ -9,7 +9,7 @@ $(document).ready(function () {
             }, {
                 type: response.status === true ? 'success' : 'danger'
             });
-        } else {
+        } else if (response.message != null) {
             let messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">';
             messageHtml += response.message;
             messageHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
@@ -30,7 +30,7 @@ $(document).ready(function () {
             if (response.data && response.data.redirect) {
                 setTimeout(function () {
                     window.location.href = response.data.redirect;
-                }, 7000);
+                }, 1000);
             }
         }
 
@@ -67,11 +67,12 @@ $(document).ready(function () {
             cache: false,
         }).then(
             function (response) {
-                console.log("Ajax" + response);
+                console.log("login" + response);
                 handleAjaxResponse(response, form, submitSuccess, notify, btnSubmit, btnSubmitText, btnSubmitIcon);
             },
             function (jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown);
+                let response = jqXHR.responseJSON;
+                sendMessageByResponse(response);
             }
 
         ).always(function () {

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Backend\Http\Requests\LoginRequest;
+use Modules\Backend\Services\LoginService;
+use Modules\Core\Traits\ResponseMessage;
 
 class LoginController extends Controller
 {
@@ -28,9 +31,9 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request, LoginService $loginService)
     {
-        //
+        $loginService->login($request->validated());
     }
 
     /**

@@ -37,6 +37,15 @@ class RegisterController extends Controller
     {
         $registerService->register($request->validated());
 
+        if (get_config('user_verification')) {
+            return $this->success(
+                [
+                    'redirect' => route('admin.login'),
+                    'message' => 'Register successfully, please check your email to verify your account'
+                ]
+            );
+        }
+
         return $this->success(
             [
                 'redirect' => route('admin.login'),
