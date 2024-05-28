@@ -2,6 +2,25 @@
 $(document).ready(function () {
 
     // handle ajax response
+    function sendMessageByResponse(response, notify = false) {
+        if (notify) {
+            $.notify({
+                message: response.message
+            }, {
+                type: response.status === true ? 'success' : 'danger'
+            });
+        } else {
+            let messageHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+            messageHtml += response.message;
+            messageHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+            messageHtml += '<span aria-hidden="true">&times;</span>';
+            messageHtml += '</button>';
+            messageHtml += '</div>';
+
+            $('#jqueryMessageResponse').html(messageHtml);
+        }
+    }
+
     function handleAjaxResponse(response, form, submitSuccess, notify, btnSubmit, btnSubmitText, btnSubmitIcon) {
         if (response.status === true) {
             if (submitSuccess) {
@@ -13,24 +32,9 @@ $(document).ready(function () {
                     window.location.href = response.data.redirect;
                 }, 7000);
             }
-
-
-            if (notify) {
-                $.notify({
-                    message: response.message
-                }, {
-                    type: 'success'
-                });
-            }
-        } else {
-            if (notify) {
-                $.notify({
-                    message: response.message
-                }, {
-                    type: 'danger'
-                });
-            }
         }
+
+        sendMessageByResponse(response);
     }
 
     // reset submit button
@@ -63,12 +67,16 @@ $(document).ready(function () {
             cache: false,
         }).then(
             function (response) {
+                console.log("Ajax" + response);
                 handleAjaxResponse(response, form, submitSuccess, notify, btnSubmit, btnSubmitText, btnSubmitIcon);
+            },
+            function (jqXHR, textStatus, errorThrown) {
+                console.error('AJAX error:', textStatus, errorThrown);
             }
+
         ).always(function () {
             resetSubmitButton(btnSubmit, btnSubmitText, btnSubmitIcon);
-        }
-        );
+        });
 
     }
 
@@ -97,3 +105,4 @@ $(document).ready(function () {
 
     });
 });
+

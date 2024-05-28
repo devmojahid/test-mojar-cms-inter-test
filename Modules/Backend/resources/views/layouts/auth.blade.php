@@ -39,6 +39,7 @@
             <div class="content-wrapper d-flex align-items-center auth">
                 <div class="row flex-grow">
                     <div class="col-lg-4 mx-auto">
+                        <div id="jqueryMessageResponse"></div>
                         @yield('content')
                     </div>
                 </div>
