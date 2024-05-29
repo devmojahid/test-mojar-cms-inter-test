@@ -7,8 +7,10 @@ use Modules\Backend\Http\Controllers\{
     PageController,
     Plugins\PluginController
 };
+use Modules\Backend\Http\Controllers\Auth\ForgotPasswordController;
 use Modules\Backend\Http\Controllers\Auth\LoginController;
 use Modules\Backend\Http\Controllers\Auth\RegisterController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +52,10 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get("login", [LoginController::class, "index"])->name('admin.login');
     Route::post("login", [LoginController::class, "store"])->name('admin.login');
-    // Route::post("login", [LoginController::class, "store"])->name('admin.login');
 
     Route::get("register", [RegisterController::class, "index"])->name('admin.register');
     Route::post("register", [RegisterController::class, "store"])->name('admin.register');
+
+    Route::get("forgot-password", [ForgotPasswordController::class, "index"])->name('admin.forgot-password');
+    Route::post("/forgot-password", [ForgotPasswordController::class, "forgotPassword"])->name('admin.forgot-password');
 });

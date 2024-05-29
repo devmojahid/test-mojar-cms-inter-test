@@ -73,23 +73,31 @@ $(document).ready(function () {
                 handleAjaxResponse(response, form, submitSuccess, notify, btnSubmit, btnSubmitText, btnSubmitIcon);
             },
             function (jqXHR, textStatus, errorThrown) {
-                let response = jqXHR.responseJSON;
-
-                if (response) {
-                    console.error("Error: ", response.message || "Unknown error 1");
-                    console.log(response);
-                    sendMessageByResponse(response);
-                } else {
-                    console.error("Error: ", jqXHR.responseText || "Unknown error 1");
-                    sendMessageByResponse({ message: jqXHR.responseText || "Unknown error", status: false });
+                let response;
+                try {
+                    response = jqXHR.responseJSON || JSON.parse(jqXHR.responseText);
+                } catch (e) {
+                    console.error("Failed to parse JSON response: ", e);
+                    response = {
+                        status: false,
+                        message: 'An unexpected error occurred. Please try again later.'
+                    };
                 }
 
+                console.error("AJAX error response: ", response);
+                console.error("textStatus: ", textStatus);
+                console.error("errorThrown: ", errorThrown);
+                console.error("jqXHR: ", jqXHR);
+
                 sendMessageByResponse(response);
+
             }
 
         ).always(function () {
             resetSubmitButton(btnSubmit, btnSubmitText, btnSubmitIcon);
         });
+
+
 
     }
 

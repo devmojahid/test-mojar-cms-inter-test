@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Backend\Http\Requests\LoginRequest;
-use Modules\Backend\Services\LoginService;
+use Modules\Backend\Http\Requests\ForgotPasswordRequest;
+use Modules\Backend\Services\ForgotPasswordService;
 use Modules\Core\Traits\ResponseMessage;
 
-class LoginController extends Controller
+class ForgotPasswordController extends Controller
 {
     use ResponseMessage;
     /**
@@ -18,7 +18,7 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return view('backend::auth.login');
+        return view('backend::auth.forgot_password');
     }
 
     /**
@@ -32,9 +32,9 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(LoginRequest $request, LoginService $loginService)
+    public function store(ForgotPasswordRequest $request, ForgotPasswordService $forgotPasswordService)
     {
-        $responseRaw = $loginService->login($request->validated());
+        $responseRaw = $forgotPasswordService->forgotPassword($request->validated());
         $response = $responseRaw->getData(true);
         if ($response['status']) {
             return $this->success(

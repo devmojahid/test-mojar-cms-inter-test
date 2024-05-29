@@ -39,19 +39,17 @@
 
         <h4>{{ trans('backend::auth.hello_lets_started', ['app' => get_config('title', 'Inter Test')]) }}</h4>
         <h6 class="font-weight-light">Sign in to continue.</h6>
-        <form class="pt-3 form-ajax-handle" action="{{ route('admin.login') }}" method="POST">
+        <form class="pt-3 form-ajax-handle" action="{{ route('admin.forgot-password') }}" method="POST">
             @csrf
             <div class="form-group">
                 <input type="email" name="email" class="form-control form-control-lg" id="emailField"
                     placeholder="Email">
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control form-control-lg" id="passwordField" name="password"
-                    placeholder="Password">
-            </div>
             <div class="mt-3">
                 <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
-                    data-loading-text="Loading...">SIGN IN</button>
+                    data-loading-text="Loading...">
+                    Forgot Password
+                </button>
             </div>
             <div class="my-2 d-flex justify-content-between align-items-center">
                 @if (get_config('user_keep_signed_in', true))
@@ -61,7 +59,7 @@
                     </div>
                 @endif
                 @if (get_config('user_forgot_password', true))
-                    <a href="{{ route('admin.forgot-password') }}" class="auth-link text-black">Forgot password?</a>
+                    <a href="" class="auth-link text-black">Forgot password?</a>
                 @endif
             </div>
             <div class="mb-2">
