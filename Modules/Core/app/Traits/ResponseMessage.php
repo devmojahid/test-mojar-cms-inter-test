@@ -28,6 +28,7 @@ trait ResponseMessage
         }
 
         if (!empty($data['redirect'])) {
+
             return redirect()->to($data['redirect']);
         }
 
@@ -50,12 +51,13 @@ trait ResponseMessage
         return $this->response($message, true);
     }
 
-    public function error($data)
+
+    public function error(string|array $message): JsonResponse|RedirectResponse
     {
-        if (is_string($data)) {
-            $data = ['message' => $data];
+        if (is_string($message)) {
+            $message = ['message' => $message];
         }
 
-        return $this->response($data, false);
+        return $this->response($message, false);
     }
 }

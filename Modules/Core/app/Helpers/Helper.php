@@ -107,7 +107,9 @@ if (!function_exists('hello1')) {
 function is_json(mixed $string): bool
 {
     try {
-        json_decode($string);
+        if (!is_null(json_decode($string)) && (json_last_error() == JSON_ERROR_NONE)) {
+            return true;
+        }
 
         return json_last_error() === JSON_ERROR_NONE;
     } catch (\Throwable $e) {

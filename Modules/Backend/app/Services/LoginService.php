@@ -47,6 +47,7 @@ class LoginService
             );
         }
 
+
         if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             return $this->success(
                 [

@@ -1,9 +1,6 @@
 @extends('backend::layouts.auth')
 @section('content')
     <div class="auth-form-light text-left p-5">
-        {{-- <div class="brand-logo">
-            <img src="../../assets/images/logo.svg">
-        </div> --}}
         @if ($logo = get_config('logo'))
             <div class="brand-logo">
                 <img src="{{ upload_url(get_config('logo')) }}" alt="{{ get_config('title', 'Inter Test') }}">
