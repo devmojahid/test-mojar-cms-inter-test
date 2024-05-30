@@ -10,7 +10,7 @@ use Modules\Backend\Http\Controllers\{
 use Modules\Backend\Http\Controllers\Auth\ForgotPasswordController;
 use Modules\Backend\Http\Controllers\Auth\LoginController;
 use Modules\Backend\Http\Controllers\Auth\RegisterController;
-
+use Modules\Backend\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +57,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post("register", [RegisterController::class, "store"])->name('admin.register');
 
     Route::get("forgot-password", [ForgotPasswordController::class, "index"])->name('admin.forgot-password');
-    Route::post("/forgot-password", [ForgotPasswordController::class, "forgotPassword"])->name('admin.forgot-password');
+    Route::post("/forgot-password", [ForgotPasswordController::class, "store"])->name('admin.forgot-password');
+    Route::get("/reset-password/{email}/{token}", [ResetPasswordController::class, "resetPassword"])->name('admin.reset-password');
 });

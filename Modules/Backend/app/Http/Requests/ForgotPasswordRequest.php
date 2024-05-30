@@ -19,7 +19,10 @@ class ForgotPasswordRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::modelExists(User::class, 'email', function ($query) {
+                // Rule::modelExists(User::class, 'email', function ($query) {
+                //     $query->where('status', User::STATUS_ACTIVE);
+                // })
+                Rule::exists('users', 'email')->where(function ($query) {
                     $query->where('status', User::STATUS_ACTIVE);
                 })
             ]

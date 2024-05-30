@@ -5,6 +5,9 @@ namespace Modules\Backend\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Modules\Core\Emails\SendPasswordResetEmail;
+use Modules\Core\Models\PasswordReset;
 use Modules\Core\Models\User;
 use Modules\Core\Traits\ResponseMessage;
 
@@ -28,6 +31,17 @@ class ForgotPasswordService
                     'message' => 'User not found'
                 ]
             );
+        }
+
+        $existingToken = PasswordReset::where('email', $email)->first();
+
+        if ($existingToken) {
+            if ($existingToken->created_at < now()->subHour()) {
+                // send email with old token
+                do_action('forgot_password.old_token_send', $user);
+                // SendPasswordResetEmail::dispatch($user, $existingToken->token);
+                Mail::to($user->email)->send(new SendPasswordResetEmail($user->email, $user, $existingToken->token));
+            }
         }
 
 
