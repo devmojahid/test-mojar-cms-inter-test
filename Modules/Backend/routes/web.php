@@ -59,4 +59,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("forgot-password", [ForgotPasswordController::class, "index"])->name('admin.forgot-password');
     Route::post("/forgot-password", [ForgotPasswordController::class, "store"])->name('admin.forgot-password');
     Route::get("/reset-password/{email}/{token}", [ResetPasswordController::class, "resetPassword"])->name('admin.reset-password');
+    Route::post("/reset-password/{email}/{token}", [ResetPasswordController::class, "reset"])->name('admin.reset-password');
 });

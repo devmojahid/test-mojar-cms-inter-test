@@ -19,7 +19,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        return view('backend::auth.register');
+        $socialites = get_config('socialite', []);
+        return view('backend::auth.register', compact('socialites'));
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Models\User;
 
-class ForgotPasswordRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,16 +16,22 @@ class ForgotPasswordRequest extends FormRequest
 
 
         return [
-            'email' => [
+            'password' => [
                 'required',
-                'email',
-                // Rule::modelExists(User::class, 'email', function ($query) {
-                //     $query->where('status', User::STATUS_ACTIVE);
-                // })
-                Rule::exists('users', 'email')->where(function ($query) {
-                    $query->where('status', User::STATUS_ACTIVE);
-                })
+                'string',
+                'min:6',
+                'confirmed'
             ]
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'password.required' => 'Password is required',
+            'password.string' => 'Password must be a string',
+            'password.min' => 'Password must be at least 6 characters',
+            'password.confirmed' => 'Password confirmation does not match'
         ];
     }
 

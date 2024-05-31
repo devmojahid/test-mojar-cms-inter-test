@@ -9,12 +9,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Admin - {{ config('app.name', 'Laravel') }}</title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="../../assets/vendors/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/mdi/css/themify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/mdi/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/ti-icons/css/themify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
 
     <meta name="description" content="{{ $description ?? '' }}">
     <meta name="keywords" content="{{ $keywords ?? '' }}">
@@ -25,9 +25,9 @@
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('/assets/images/favicon.png') }}" />
+
     @stack('styles')
     {{-- Vite CSS --}}
     {{-- {{ module_vite('build-backend', 'resources/assets/sass/app.scss') }} --}}
@@ -50,15 +50,15 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="{{ asset('/assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
     <!-- inject:js -->
-    <script src="../../assets/js/off-canvas.js"></script>
-    <script src="../../assets/js/hoverable-collapse.js"></script>
-    <script src="../../assets/js/off-canvas.js"></script>
-    <script src="../../assets/js/misc.js"></script>
+    <script src="{{ asset('/assets/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('/assets/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('/assets/js/misc.js') }}"></script>
+    <script src="{{ asset('/assets/js/misc.js') }}"></script>
     <script src="{{ asset('assets/cms/js/form-handle.js') }}"></script>
     @stack('scripts')
 </body>

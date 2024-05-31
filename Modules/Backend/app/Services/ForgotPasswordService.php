@@ -10,6 +10,7 @@ use Modules\Core\Emails\SendPasswordResetEmail;
 use Modules\Core\Models\PasswordReset;
 use Modules\Core\Models\User;
 use Modules\Core\Traits\ResponseMessage;
+use Illuminate\Support\Str;
 
 class ForgotPasswordService
 {
@@ -44,6 +45,40 @@ class ForgotPasswordService
             }
         }
 
+
+        DB::beginTransaction();
+
+        try {
+            $token = Str::random(32);
+            $passwordReset = PasswordReset::updateOrCreate(
+                ['email' => $email],
+                [
+                    'email' => $email,
+                    'token' => $token
+                ]
+            );
+
+            if ($passwordReset) {
+                Mail::to($user->email)->send(new SendPasswordResetEmail($user->email, $user, $token));
+            }
+
+            DB::commit();
+            do_action('forgot_password.success', $user);
+
+            return $this->success(
+                [
+                    'message' => 'Password reset link sent to your email'
+                ]
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            do_action('forgot_password.failed', $user);
+            return $this->error(
+                [
+                    'message' => 'Password reset failed'
+                ]
+            );
+        }
 
 
 

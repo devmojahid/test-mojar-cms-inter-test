@@ -31,4 +31,10 @@ return [
         ],
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID', 'Ov23liipXk0RCIWhzx6k'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET', '20f3efdf839416f042147dff77c0d10fcb5c2665'),
+        'redirect' => 'http://inter-test.test/auth/github/callback',
+    ],
+
 ];

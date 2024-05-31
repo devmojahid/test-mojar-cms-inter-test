@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
         if ($response['status']) {
             return $this->success(
                 [
-                    'redirect' => $response['data']['redirect'],
+                    'redirect' => $response['data']['redirect'] ?? "",
                     'message' => $response['data']['message']
                 ]
             );
