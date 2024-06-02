@@ -39,8 +39,13 @@
             <div class="mb-2">
                 @foreach ($socialites as $socialite)
                 @endforeach
-                <a href="#" class="btn btn-block btn-facebook auth-form-btn">
-                    <i class="mdi mdi-github mr-2"></i> Connect using facebook
+                <a href="{{ route('auth.social.redirect', 'github') }}"
+                    class="btn btn-block btn-github auth-form-btn mt-3 d-block">
+                    <i class="mdi mdi-github mr-2"></i> Connect using Github
+                </a>
+                <a href="{{ route('auth.social.redirect', 'facebook') }}"
+                    class="btn btn-block btn-facebook auth-form-btn mt-3 d-block">
+                    <i class="mdi mdi-facebook mr-2"></i> Connect using facebook
                 </a>
             </div>
             <div class="text-center mt-4 font-weight-light"> Already have a account? <a href="{{ route('admin.login') }}"

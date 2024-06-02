@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Notifications\Notifiable;
+use Modules\Backend\Models\SocialToken;
 use Modules\Core\Database\Factories\UserFactory;
 
 class User extends AuthUser
@@ -74,5 +75,10 @@ class User extends AuthUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function socialTokens()
+    {
+        return $this->hasMany(SocialToken::class, 'user_id', 'id');
     }
 }

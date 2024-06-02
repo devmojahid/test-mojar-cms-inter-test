@@ -11,6 +11,7 @@ use Modules\Backend\Http\Controllers\Auth\ForgotPasswordController;
 use Modules\Backend\Http\Controllers\Auth\LoginController;
 use Modules\Backend\Http\Controllers\Auth\RegisterController;
 use Modules\Backend\Http\Controllers\Auth\ResetPasswordController;
+use Modules\Backend\Http\Controllers\Auth\SocialLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +61,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post("/forgot-password", [ForgotPasswordController::class, "store"])->name('admin.forgot-password');
     Route::get("/reset-password/{email}/{token}", [ResetPasswordController::class, "resetPassword"])->name('admin.reset-password');
     Route::post("/reset-password/{email}/{token}", [ResetPasswordController::class, "reset"])->name('admin.reset-password');
+
+    Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('auth.social.callback');
+    Route::get('/auth/{provider}/redirect', [SocialLoginController::class, 'redirectToProvider'])->name('auth.social.redirect');
 });
