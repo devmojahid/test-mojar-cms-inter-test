@@ -1,12 +1,14 @@
-<?php 
+<?php
+
 namespace Modules\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Modules\Core\Contracts\GlobalDataContract as ContractsGlobalDataContract;
+use Modules\Core\Contracts\GlobalDataContract;
 
-class GlobalData extends Facade{
+class GlobalData extends Facade
+{
     protected static function getFacadeAccessor(): string
     {
-        return ContractsGlobalDataContract::class;
+        return GlobalDataContract::class;
     }
 }

@@ -4,6 +4,8 @@ namespace Modules\Core\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\GlobalDataContract;
+use Modules\Core\Supports\GlobalData;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -137,5 +139,12 @@ class CoreServiceProvider extends ServiceProvider
         foreach ($singletons as $abstract => $concrete) {
             $this->app->singleton($abstract, $concrete);
         }
+
+        $this->app->singleton(
+            GlobalDataContract::class,
+            function () {
+                new GlobalData();
+            }
+        );
     }
 }
