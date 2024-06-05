@@ -6,17 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Core\Facades\GlobalData;
+use Modules\Core\Traits\MenuHookAction;
 
 class MenuController extends Controller
 {
+    use MenuHookAction;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $menuData = GlobalData::get('admin_menu', ["title" => "Menu", "slug" => "menu", "args" => []]);
         add_action("menu_builder_sidebar", [$this, "menu_builder_sidebar"]);
 
-        return view('backend::menu');
+        return view('backend::menu', compact('menuData'));
     }
 
     /**

@@ -2,6 +2,7 @@
 @push('styles')
 @endpush
 @section('content')
+    {{ print_r($menuData) }}
     <div class="row">
         <div class="col-12">
             <section class="content-header info-box p-3 rounded">
