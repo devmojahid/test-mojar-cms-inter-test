@@ -143,7 +143,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(
             GlobalDataContract::class,
             function () {
-                new GlobalData();
+                return new GlobalData();
             }
         );
     }

@@ -12,6 +12,7 @@ use Modules\Backend\Http\Controllers\Auth\LoginController;
 use Modules\Backend\Http\Controllers\Auth\RegisterController;
 use Modules\Backend\Http\Controllers\Auth\ResetPasswordController;
 use Modules\Backend\Http\Controllers\Auth\SocialLoginController;
+use Modules\Core\Facades\GlobalData;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +38,8 @@ Route::group(['prefix' => 'admin/plugins'], function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
-
-        add_filter("somthing_filter_dashboard", function ($title) {
-            return ucwords("hello, $title");
-        }, 10, 1);
+        // $menuData = GlobalData::all();
+        // dd($menuData);
 
         return view('backend::dashboard');
     })->name('admin.dashboard');
