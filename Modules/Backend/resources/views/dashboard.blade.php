@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-12">
             <h3>Start Apply </h3>
+
             @apply_filters('somthing_filter_dashboard', 'Mojahid')
             <h3>Close Apply </h3>
             <div class="card">

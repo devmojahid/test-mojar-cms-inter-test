@@ -15,15 +15,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Core\Facades\GlobalData;
+use Modules\Core\Traits\MenuHookAction;
 
 class BackendController extends Controller
 {
+    use MenuHookAction;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('backend::index');
+        $this->addAdminMenu('Dashboard', 'admin.dashboard');
+        dd(GlobalData::all());
+        return view('backend::dashboard');
+        // return view('backend::index');
     }
 
     /**
@@ -31,6 +37,8 @@ class BackendController extends Controller
      */
     public function create()
     {
+
+
         return view('backend::create');
     }
 
