@@ -27,8 +27,8 @@ class BackendController extends Controller
     public function index()
     {
         $this->addAdminMenu('Dashboard', 'admin.dashboard');
-        dd(GlobalData::all());
-        return view('backend::dashboard');
+        dd(GlobalData::get('admin_menu'));
+        // return view('backend::dashboard');
         // return view('backend::index');
     }
 
